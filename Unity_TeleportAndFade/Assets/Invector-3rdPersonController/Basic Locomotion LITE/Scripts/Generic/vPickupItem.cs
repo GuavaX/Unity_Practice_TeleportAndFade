@@ -14,14 +14,16 @@ public class vPickupItem : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             Renderer[] renderers = GetComponentsInChildren<Renderer>();
-            foreach (Renderer r in renderers)            
-                r.enabled = false;            
+            foreach (Renderer r in renderers)
+                r.enabled = false;
 
             _audioSource.PlayOneShot(_audioClip);
             Destroy(gameObject, _audioClip.length);
+
+            GameObject.Find("遊戲管理器").GetComponent<Level2GameManager>().GetScore();
         }
     }
 }
