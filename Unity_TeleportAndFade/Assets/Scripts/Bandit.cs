@@ -10,6 +10,7 @@ public class Bandit : MonoBehaviour
     private Animator ani;
     private AudioSource aud;
     public AudioClip[] sound;
+    public AudioClip sound3;
 
     private float stopDistance = 2;
 
@@ -21,7 +22,7 @@ public class Bandit : MonoBehaviour
         aud = GetComponent<AudioSource>();
 
         int i = Random.Range(0, 1);
-        //aud.PlayOneShot(sound[0]);
+        aud.PlayOneShot(sound3);
 
         nav.stoppingDistance = stopDistance;
 
