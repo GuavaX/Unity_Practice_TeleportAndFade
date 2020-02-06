@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Level2GameManager : MonoBehaviour
 {
     private Image imgCross;
     private Text textScores;
     private GameObject warning;
+    private GameObject centerText;
     private GameObject[] Bandits;
     private bool gotFirstScore;
-    private Vector3 bornPoint;
+    private bool gameOver;
+
+    public GameObject bornBandits;    
+    public GameObject[] bornPoint;
 
     private int gotThings = 0;
 
@@ -22,6 +27,7 @@ public class Level2GameManager : MonoBehaviour
         StartCoroutine(EnterLevel()); //載入關卡時執行淡入效果
 
         textScores = GameObject.Find("分數").GetComponent<Text>();
+        centerText = GameObject.Find("中央字幕");
         warning = GameObject.Find("警告標語");
         warning.SetActive(false);
         Bandits = GameObject.FindGameObjectsWithTag("Bandit");
@@ -32,6 +38,27 @@ public class Level2GameManager : MonoBehaviour
     private void Update()
     {
         textScores.text = gotThings+"/7";
+        if ((gotThings == 7)&&(gameOver==false))
+        {
+            gameOver = true;
+            warning.SetActive(false);
+            centerText.GetComponent<Text>().text = "蒐集完成！！";
+            StartCoroutine(SetCenterText());
+        }
+
+        if (gameOver == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene("第一關");
+            }
+        }
+    }
+
+    private IEnumerator SetCenterText()
+    {       
+        yield return new WaitForSeconds(1);
+        centerText.GetComponent<Text>().text = "按下空白鍵\n回到第一關";
     }
 
     private IEnumerator EnterLevel() //淡入效果
@@ -58,11 +85,14 @@ public class Level2GameManager : MonoBehaviour
         warning.SetActive(true);
         StartCoroutine(InvokeWaring());
         gotThings += 1;
+
+        BornBandit();
     }
 
     public void BornBandit()
     {
-        //bornPoint
+        int i = Random.Range(0, 6);
+        Instantiate(bornBandits, bornPoint[i].transform.position, Quaternion.identity);        
     }
 
     IEnumerator InvokeWaring()

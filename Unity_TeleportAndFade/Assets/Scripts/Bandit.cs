@@ -8,6 +8,8 @@ public class Bandit : MonoBehaviour
     private Transform target;
     private NavMeshAgent nav;
     private Animator ani;
+    private AudioSource aud;
+    public AudioClip[] sound;
 
     private float stopDistance = 2;
 
@@ -16,6 +18,10 @@ public class Bandit : MonoBehaviour
         target = GameObject.Find("玩家").GetComponent<Transform>();
         nav = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
+        aud = GetComponent<AudioSource>();
+
+        int i = Random.Range(0, 1);
+        //aud.PlayOneShot(sound[0]);
 
         nav.stoppingDistance = stopDistance;
 
